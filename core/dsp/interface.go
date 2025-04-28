@@ -3,9 +3,6 @@ package dsp
 import (
 	"context"
 	. "mykit/core/types"
-	"time"
-
-	"github.com/influxdata/influxdb/client/v2"
 )
 
 type G struct {
@@ -78,20 +75,6 @@ type AlertTrigger func(*AlertLine) Trigger
 
 type AlertSystemOption func(*AlertSystem)
 
-type PointDataSeriesSource func(table string) PointDataSeries
-
-type SensorDataSeriesSource func(table string) SensorDataSeries
-
-type SensorDataSeriesFrom func(table string, tick int64) SensorDataSeries
-
-type SensorDataSeriesFrameMap map[time.Time]SensorDataSeries
-
-type DpcParser func(SensorData) float64
-
-type TimeDataSeriesSource func(table string) TimeDataSeries
-
-type TimeDataSeriesMap map[int64]TimeDataSeries
-
 type AlertMark struct {
 	Tick  int64
 	Value float64
@@ -104,27 +87,10 @@ func (t AlertMark) Alert() bool {
 	return t.Level != 0
 }
 
-func (t AlertMark) TimeData() TimeData {
-	return TimeData{Time: t.Tick, Data: t.Value}
-}
-
 type AlertMarkList []AlertMark
 
 type AlertMarker interface {
 	Mark(tick int64, value float64) AlertMark
-}
-
-type InfluxPoint interface {
-	ToPoint(name string, tick ...time.Time) *client.Point
-}
-
-type InfluxPointSeries []InfluxPoint
-
-type InfluxPointJob chan InfluxPointSeries
-
-func CountInfluxPointRemain(job InfluxPointJob) int {
-	TearDownWait()
-	return len(job)
 }
 
 type StrDataHandle func(string)
@@ -175,40 +141,6 @@ type SignalStatus interface {
 type SignalCache interface {
 	KVCache
 	Load(string) SignalStatus
-}
-
-type SensorDataHandle func(...SensorData)
-
-type SensorDataJob chan SensorDataSeries
-
-func CountSensorDataRemain(job SensorDataJob) int {
-	TearDownWait()
-	return len(job)
-}
-
-func (t SensorDataJob) Commit(v ...SensorData) {
-	var job = func(ctx context.Context) {
-		t <- v
-	}
-
-	Go(context.Background(), job, "commit sensor data")
-}
-
-type GeoDataConsumer func(GeoDataJob)
-
-type GeoDataJob chan GeoDataSeries
-
-func CountGeoDataJobRemain(job GeoDataJob) int {
-	TearDownWait()
-	return len(job)
-}
-
-func (t GeoDataJob) Commit(v ...GeoData) {
-	var job = func(ctx context.Context) {
-		t <- v
-	}
-
-	Go(context.Background(), job, "commit GeoData")
 }
 
 type TenantDbParser func(ctx context.Context) (tenant, db string)

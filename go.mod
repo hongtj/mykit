@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/coreos/etcd v3.3.27+incompatible
+	github.com/denisenkom/go-mssqldb v0.10.0 // indirect
 	github.com/didi/gendry v1.9.0
 	github.com/gin-contrib/gzip v1.2.3
 	github.com/gin-gonic/gin v1.10.0
@@ -16,20 +17,24 @@ require (
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/go-xorm/xorm v0.7.9
 	github.com/golang/protobuf v1.5.4
+	github.com/gomodule/redigo v1.9.2
 	github.com/google/uuid v1.6.0
-	github.com/influxdata/influxdb v1.12.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/levigross/grequests v0.0.0-20231203190023-9c307ef1f48d
 	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/go-plugins/registry/etcdv3 v0.0.0-00010101000000-000000000000
+	github.com/miekg/dns v1.1.29 // indirect
 	github.com/prometheus-community/pro-bing v0.7.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/shopspring/decimal v1.4.0
+	github.com/sirupsen/logrus v1.9.3 // indirect
+	github.com/zeromicro/go-zero v1.8.2
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/sdk v1.35.0
 	go.opentelemetry.io/otel/trace v1.35.0
 	go.uber.org/zap v1.27.0
-	google.golang.org/grpc v1.64.1
+	google.golang.org/genproto v0.0.0-20240604185151-ef581f913117 // indirect
+	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.36.6
 )
 

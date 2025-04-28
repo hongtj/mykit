@@ -13,28 +13,12 @@ import (
 
 	"github.com/didi/gendry/builder"
 	"github.com/google/uuid"
-	"github.com/influxdata/influxdb/client/v2"
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 )
 
 func DeleteHelpTable(raw string) string {
 	return "zzz_" + raw
-}
-
-func ParseInfluxPoint(table string, data ...InfluxPoint) []*client.Point {
-	res := []*client.Point{}
-
-	t := time.Now()
-
-	for _, v := range data {
-		t = t.Add(time.Nanosecond)
-		item := v.ToPoint(table, t)
-
-		res = append(res, item)
-	}
-
-	return res
 }
 
 func DbContextFromDbItem(raw interface{}, ignoreFiled ...string) DbContext {
