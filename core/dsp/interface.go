@@ -71,10 +71,6 @@ type Marker func(int64) float64
 
 type Trigger func(int64, float64) (float64, bool)
 
-type AlertTrigger func(*AlertLine) Trigger
-
-type AlertSystemOption func(*AlertSystem)
-
 type AlertMark struct {
 	Tick  int64
 	Value float64

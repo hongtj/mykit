@@ -3,11 +3,11 @@ package transfer
 import (
 	"context"
 	"fmt"
+	. "mykit/core/dsp"
+	. "mykit/core/persist"
+	. "mykit/core/types"
 	"net/http"
 	"strings"
-	. "utils/dsp"
-	. "utils/persist"
-	. "utils/types"
 
 	"github.com/gin-gonic/gin"
 )

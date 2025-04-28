@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"reflect"
 	"runtime"
-	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -87,35 +86,6 @@ func ShortCaller(k int) string {
 	entry := zapcore.NewEntryCaller(pc, file, line, ok)
 
 	return entry.TrimmedPath()
-}
-
-type DpcHandle struct {
-	m map[int64]DpcParser
-}
-
-func NewDpcHandle() DpcHandle {
-	res := DpcHandle{
-		m: map[int64]DpcParser{},
-	}
-
-	return res
-}
-
-func (t DpcHandle) Parse(raw SensorData) SensorData {
-	f, ok := t.m[raw.Kind]
-	if !ok {
-		return raw
-	}
-
-	raw.Value = f(raw)
-
-	return raw
-}
-
-func (t DpcHandle) Reg(raw map[int64]DpcParser) {
-	for k, v := range raw {
-		t.m[k] = v
-	}
 }
 
 type Spokesman struct {
@@ -468,58 +438,6 @@ func (t IotDataPack) Merge(raw ...IotDataPack) {
 			t[k] = v
 		}
 	}
-}
-
-func (t SensorData) TakeDigitsValue(n int) float64 {
-	return TakeDigits(t.Value, n)
-}
-
-func (t SensorData) TakeDigits(n int) SensorData {
-	res := SensorData{
-		Time:    t.Time,
-		Point:   t.Point,
-		Kind:    t.Kind,
-		Channel: t.Channel,
-		Branch:  t.Branch,
-		Frame:   t.Frame,
-		Value:   TakeDigits(t.Value, n),
-	}
-
-	return res
-}
-
-func (t SensorData) TakeDigitsTimeData(n int) TimeData {
-	return TimeData{t.Time, TakeDigits(t.Value, n)}
-}
-
-func (t SensorData) TakeDigitsFrameData(n int) TimeData {
-	return TimeData{t.Frame, TakeDigits(t.Value, n)}
-}
-
-func (t SensorData) IsTrue() bool {
-	return t.Value != SignalForFalse
-}
-
-func (t SensorData) Signal() int64 {
-	if !t.IsTrue() {
-		return SignalForFalse
-	}
-
-	return SignalForTrue
-}
-
-func (t SensorDataSeriesFrameMap) K() []time.Time {
-	res := []time.Time{}
-
-	for k := range t {
-		res = append(res, k)
-	}
-
-	sort.Slice(res, func(i, j int) bool {
-		return res[i].UnixNano() < res[j].UnixNano()
-	})
-
-	return res
 }
 
 func (t Bgd) Invalid() bool {

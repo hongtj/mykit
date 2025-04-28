@@ -338,12 +338,6 @@ var defaultUdpProcessor UdpProcessor = func(addr *net.UDPAddr, raw []byte) ([]by
 	return raw, nil
 }
 
-var defaultUdpSender UdpSender = WriteToUDP
-
-var defaultUdpOnError UdpOnError = func(conn *net.UDPConn, addr *net.UDPAddr, resp []byte, err error) {
-	WriteToUDP(conn, addr, resp)
-}
-
 type PingResponse struct {
 	PingRes
 	LinkErr    error

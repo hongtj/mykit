@@ -3,15 +3,15 @@ package transfer
 import (
 	"context"
 	"fmt"
+	. "mykit/core/dsp"
+	. "mykit/core/persist"
+	. "mykit/core/types"
 	"net/http"
 	"reflect"
 	"runtime"
 	"sort"
 	"strings"
 	"time"
-	. "utils/dsp"
-	. "utils/persist"
-	. "utils/types"
 
 	"go.uber.org/zap"
 )
@@ -69,13 +69,6 @@ func (t LpcDispatch) ForbidApp(app ...string) {
 func (t LpcDispatch) Call(ctx context.Context, input *Req, output *Res) (err error) {
 	ctx = HandleMd(ctx)
 	ctx = context.WithValue(ctx, TagMethod, input.GetMethod())
-
-	f, ok := GetProxy(input)
-	if ok {
-		proxyRes, _ := callProxy(f, ctx, input)
-		proxyRes.CloneTo(output)
-		return
-	}
 
 	app := input.GetApp()
 
@@ -639,8 +632,6 @@ func callDev(lpc *Lpc, ctx context.Context, req *Req) (res *Res, err error) {
 			res.Msg = fmt.Sprintf(callFailed, method)
 		}
 
-		recordRequest(req, res, cost)
-
 		if failed {
 			buf := make([]byte, OutputPanicStackSize)
 			buf = buf[:runtime.Stack(buf, false)]
@@ -715,8 +706,6 @@ func callRelease(lpc *Lpc, ctx context.Context, req *Req) (res *Res, err error) 
 			res.Code = CodeInternal
 			res.Msg = fmt.Sprintf(callFailed, method)
 		}
-
-		recordRequest(req, res, cost)
 
 		if failed {
 			buf := make([]byte, OutputPanicStackSize)
