@@ -2,12 +2,10 @@ module mykit
 
 go 1.23.0
 
-toolchain go1.23.8
-
 require (
 	github.com/coreos/etcd v3.3.27+incompatible
 	github.com/didi/gendry v1.9.0
-	github.com/gin-contrib/gzip v1.2.3
+	github.com/gin-contrib/gzip v1.2.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-ini/ini v1.67.0
 	github.com/go-playground/locales v0.14.1

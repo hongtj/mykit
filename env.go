@@ -74,9 +74,16 @@ var (
 )
 
 func UseDb(ctx context.Context, useMaster ...bool) *sqlx.DB {
-	tenant, db := smarter.TenantDb(ctx)
+	tenant, db := TenantDb(ctx)
 
 	return smarter.UseDB(tenant, db, useMaster...)
+}
+
+func TenantDb(ctx context.Context) (tenant, db string) {
+	tenant = ""
+	db = "my_dev"
+
+	return
 }
 
 func RedisKeyBuilder(ctx context.Context) *types.StrBuilder {

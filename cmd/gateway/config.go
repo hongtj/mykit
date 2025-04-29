@@ -3,13 +3,11 @@ package gateway
 import (
 	core "mykit"
 	"mykit/core/smarter"
-	"mykit/core/transfer"
 )
 
 type Config struct {
 	core.Config
 	smarter.CertPem
-	Gin transfer.GinConfig `json:",optional"`
 }
 
 func (t Config) Setup() func() {

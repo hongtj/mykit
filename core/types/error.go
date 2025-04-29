@@ -46,6 +46,6 @@ func HandleInitErr(msg string, err error, must ...bool) {
 	}
 
 	if ParseBool(must) {
-		panic(msg)
+		panic(any(msg))
 	}
 }

@@ -1,0 +1,19 @@
+App: gateway
+Zone: dev
+LogLevel: DEBUG
+
+Gin:
+  Uri: 0.0.0.0:6188
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+
+Mysql:
+  Db: my_dev
+
+Redis:
+  Access: redis
+
+DefaultCompany: 31
+DefaultWorkshop: 32
